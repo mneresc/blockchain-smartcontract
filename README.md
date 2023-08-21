@@ -13,3 +13,7 @@
 - Work: Busca geração de um hash - hash rate. Não escala bem por gastar muito energia.
 - Steak: Participação, qunto mais tokens na rede mais você consegue validar. Menos energia. Pool de steak. Tentou fraudar a rede cata suas moedos;
 - Proof of useful work: Mineração que valida uma prova útil 
+
+## Protótipos
+
+- Blockchain prototype: [protochain](./01-blockchain/01-protochain/READNE.md)
