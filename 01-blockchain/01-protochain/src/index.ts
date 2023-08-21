@@ -1,3 +1,3 @@
-import {helloThere} from './blockchain';
+import {helloThere} from './lib/blockchain';
 
 helloThere();
