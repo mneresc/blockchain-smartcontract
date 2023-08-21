@@ -1,5 +1,8 @@
 # Blockchain e Smart Contracts
 
+## Infos
+- Repo do curso: https://github.com/luiztools-cursos/web23-alunos
+
 ## Bitcoin
 
 - Paper: https://bitcoin.org/files/bitcoin-paper/bitcoin_pt_br.pdf
@@ -12,7 +15,7 @@
 
 - Work: Busca geração de um hash - hash rate. Não escala bem por gastar muito energia.
 - Steak: Participação, qunto mais tokens na rede mais você consegue validar. Menos energia. Pool de steak. Tentou fraudar a rede cata suas moedos;
-- Proof of useful work: Mineração que valida uma prova útil 
+- Proof of useful work: Mineração que valida uma prova útil
 
 ## Protótipos
 
