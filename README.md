@@ -1,5 +1,7 @@
 # Blockchain e Smart Contracts
 
+- Blockchain: funciona como um livro razão distribuído
+
 ## Infos
 - Repo do curso: https://github.com/luiztools-cursos/web23-alunos
 
