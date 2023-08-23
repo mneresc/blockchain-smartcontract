@@ -2,7 +2,7 @@ import sha256 from 'crypto-js/sha256';
 
 export default class Block {
     index: number;
-    hash: string;
+    readonly hash: string;
     timestamp: number;
     previousHash: string;
     data: string;
@@ -30,14 +30,20 @@ export default class Block {
      * Check if block is valid
      * @returns {boolean} true if block is valid
      */
-    isValid(): boolean {
+    isValid(previousHash: string, previousIndex: number): boolean {
+
         if (this.index < 1) {
             return false;
         }
 
-        if (!this.hash) {
+        if (this.previousHash !== previousHash) {
             return false;
         }
+
+        if (this.index !== previousIndex + 1) {
+            return false;
+        }
+
         return true;
     }
 }
