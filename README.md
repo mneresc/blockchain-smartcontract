@@ -11,6 +11,7 @@
 - Pool de mineração
     - Nicehash
     - Hiveon
+
 ## Proof of
 
 - Work: Busca geração de um hash - hash rate. Não escala bem por gastar muito energia.

@@ -1,12 +1,11 @@
 import Block  from './block';
 
 
-export const helloThere = () => {
-    const block = new Block();
-    block.index = 1;
-    block.hash = '1234';
+export default class BlockChain{
+    blocks: Block[];
 
-    console.log(block.isValid());
-    console.log(block);
+    constructor(){
+        this.blocks = [new Block(0,"genesis")];
+    }
 
 }
