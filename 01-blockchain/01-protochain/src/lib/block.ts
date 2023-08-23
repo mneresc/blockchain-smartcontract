@@ -1,15 +1,29 @@
+import sha256 from 'crypto-js/sha256';
+
 export default class Block {
-    index: number = 1;
-    hash: string = '';
+    index: number;
+    hash: string;
+    timestamp: number;
+    previousHash: string;
+    data: string;
 
     /**
      * Block constructor
      * @param index block index
-     * @param hash block hash
+     * @param previousHash previous block hash
+     * @param data block data
      */
-    constructor(index: number = 1, hash: string = '') {
+    constructor(index: number, previousHash: string, data: string) {
         this.index = index;
-        this.hash = hash;
+        this.timestamp = Date.now();
+        this.previousHash = previousHash;
+        this.data = data;
+
+        this.hash = this.getHash();
+    }
+
+    getHash(): string {
+        return sha256(this.index + this.previousHash + this.timestamp + this.data).toString();
     }
 
     /**

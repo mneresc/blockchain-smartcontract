@@ -6,7 +6,7 @@ describe('Block', () => {
     let block: Block;
 
     beforeEach(() => {
-        block = new Block();
+        block = new Block(1, '1234', 'data');
         block.index = 1;
         block.hash = '1234';
     });
