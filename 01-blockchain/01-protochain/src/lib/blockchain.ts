@@ -6,7 +6,7 @@ export default class BlockChain {
     nextIndex: number = 0;
 
     constructor() {
-        this.blocks = [new Block(0, '', 'Genesis Block')];
+        this.blocks = [new Block({index: 0, previousHash:'', data: 'Genesis Block'} as Block)];
         this.nextIndex++;
     }
 

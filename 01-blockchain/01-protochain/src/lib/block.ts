@@ -14,13 +14,13 @@ export default class Block {
      * @param previousHash previous block hash
      * @param data block data
      */
-    constructor(index: number, previousHash: string, data: string) {
-        this.index = index;
-        this.timestamp = Date.now();
-        this.previousHash = previousHash;
-        this.data = data;
+    constructor(block?: Block) {
+        this.index = block?.index || 0;
+        this.timestamp = block?.timestamp || Date.now();
+        this.previousHash = block?.previousHash || '';
+        this.data = block?.data || '';
 
-        this.hash = this.getHash();
+        this.hash = block?.hash || this.getHash() ;
     }
 
     getHash(): string {

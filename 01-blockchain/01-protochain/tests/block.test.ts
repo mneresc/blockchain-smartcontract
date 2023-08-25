@@ -6,11 +6,11 @@ describe('Block', () => {
     let genesis: Block;
 
     beforeAll(() => {
-        genesis = new Block(0, '', 'Genesis Block');
+        genesis = new Block({index: 0, previousHash: '', data: 'Genesis Block'} as Block);
     });
 
     beforeEach(() => {
-        block = new Block(1, genesis.hash, 'data');
+        block = new Block({index:1, previousHash: genesis.hash, data: 'data'} as Block);
         block.index = 1;
     });
 
@@ -35,4 +35,9 @@ describe('Block', () => {
     it('shold be a invalid previous index', () => {
         expect(block.isValid(genesis.hash, -10).success).toBe(false);
     }  );
+
+    it('should be valid empty block', () => {
+        const block = new Block();
+        expect(block.isValid(genesis.hash, genesis.index).success).toBe(false);
+    });
 });
