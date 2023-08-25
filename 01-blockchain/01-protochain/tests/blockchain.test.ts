@@ -36,5 +36,11 @@ describe('BlockChain', () => {
         expect(blockchain.blocks.length).toBe(2);
     });
 
+    it('should get a block by hash', () => {
+        const block = new Block(1, blockchain.blocks[0].hash, 'data');
+        blockchain.addBlock(block);
+        expect(blockchain.getBlock(block.hash)).toBe(block);
+    });
+
 
 });

@@ -7,7 +7,8 @@
     "test": "jest",
     "compile": "npx tsc",
     "start": "npx ts-node ./src/index.ts",
-    "start:dev": "npx nodemon ./src/blockchain.ts --watch './src/' -e ts"
+    "start:dev": "npx nodemon ./src/blockchain.ts --watch './src/' -e ts",
+    "blockchain": "npx nodemon  ./src/server/blockchain-server.ts --watch './src/' -e ts"
   },
   "keywords": [],
   "author": "",
