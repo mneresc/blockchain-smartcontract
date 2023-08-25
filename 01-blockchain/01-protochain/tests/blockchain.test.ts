@@ -21,13 +21,13 @@ describe('BlockChain', () => {
 
     it('should be a valid blockchain', () => {
         blockchain.addBlock(new Block(1, blockchain.blocks[0].hash, 'data'));
-        expect(blockchain.isValid()).toBe(true);
+        expect(blockchain.isValid().success).toBe(true);
     });
 
     it('should be an invalid blockchain', () => {
         blockchain.addBlock(new Block(1, blockchain.blocks[0].hash, 'data'));
         blockchain.blocks[0] = new Block(1, blockchain.blocks[0].hash, 'invalid data');
-        expect(blockchain.isValid()).toBe(false);
+        expect(blockchain.isValid().success).toBe(false);
     });
 
     it('should add a new invalid block', () => {

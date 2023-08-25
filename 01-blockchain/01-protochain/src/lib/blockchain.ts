@@ -1,4 +1,5 @@
 import Block from './block';
+import Validation from './validation';
 
 export default class BlockChain {
     blocks: Block[];
@@ -15,7 +16,7 @@ export default class BlockChain {
 
     addBlock(block: Block): boolean {
         const lastBlock = this.getLastBlock();
-        if (!block.isValid(lastBlock.hash, lastBlock.index)) {
+        if (!block.isValid(lastBlock.hash, lastBlock.index).success) {
             return false;
         }
 
@@ -24,14 +25,15 @@ export default class BlockChain {
         return true;
     }
 
-    isValid(): boolean {
+    isValid(): Validation {
         for (let i = 1; i < this.blocks.length; i++) {
             const currentBlock = this.blocks[i];
             const previousBlock = this.blocks[i - 1];
-            if (!currentBlock.isValid(previousBlock.hash, previousBlock.index)) {
-                return false;
+            const blockValidation = currentBlock.isValid(previousBlock.hash, previousBlock.index)
+            if (!blockValidation.success) {
+                return new Validation(false, `Invalid block #${currentBlock.index}: reason ${blockValidation.message}`);
             }
         }
-        return true;
+        return new Validation();
     }
 }
