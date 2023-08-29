@@ -4,14 +4,18 @@ import BlockChain from '../lib/blockchain';
 import Block from '../lib/block';
 
 const app = express();
-app.use(morgan('dev'));
+
 app.use(express.json());
 
 const blockchain = new BlockChain();
 
-app.listen(3000, () => {
-    console.log('Server listening on port 3000');
-});
+/* istanbul ignore if  */
+if (process.env.NODE_ENV !== 'test') {
+    app.use(morgan('dev'));
+    app.listen(3000, () => {
+        console.log('Server listening on port 3000');
+    });
+}
 
 /**
  * get status of blockchain
@@ -32,12 +36,15 @@ app.get('/blocks/:indexOrHash', (req, res) => {
             return res.status(404).json('block not found');
         }
     }
+    const blockByIndex = blockchain.blocks[parseInt(req.params.indexOrHash)];
 
-    return res.json(blockchain.blocks[parseInt(req.params.indexOrHash)]);
+    if (!blockByIndex) {
+        return res.status(404).json('block not found');
+    }
+    return res.json(blockByIndex);
 });
 
 app.post('/blocks', (req, res) => {
-    console.log(req.body);
     if (req.body.hash === undefined || !req.body.data) {
         return res.status(400).json('missing data');
     }
@@ -51,3 +58,5 @@ app.post('/blocks', (req, res) => {
         return res.status(400).json('invalid block');
     }
 });
+
+export { app };
