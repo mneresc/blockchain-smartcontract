@@ -36,7 +36,7 @@ describe('BlockChain Server Tests', () => {
     test('POST /blocks', async () => {
         const responseBlock = await request(app).get('/blocks/0');
         const responseStatus = await request(app).get('/status');
-        const response = await request(app).post('/blocks').send({ data: 'test' ,hash:'', 'previousHash': responseBlock.body.hash, index: responseStatus.body.blocks});
+        const response = await request(app).post('/blocks').send({ data: 'test' ,hash:'', 'previousHash': responseBlock.body.hash, index: responseStatus.body.blocks, nonce: 1, minedBy:''});
         expect(response.status).toBe(201);
         expect(response.body.index).toBe(1);
     });
