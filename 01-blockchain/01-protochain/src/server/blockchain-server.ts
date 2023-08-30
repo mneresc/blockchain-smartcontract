@@ -24,6 +24,10 @@ app.get('/status', (req, res) => {
     res.json({ status: blockchain.isValid().success, blocks: blockchain.blocks.length, lastBlock: blockchain.getLastBlock() });
 });
 
+app.get('/blocks/next', (req, res) => {
+    res.json(blockchain.getNextBlock());
+});
+
 /**
  * get blocks by hash or index
  */
@@ -50,6 +54,7 @@ app.post('/blocks', (req, res) => {
     }
 
     const block = new Block(req.body as Block);
+    block.mine(blockchain.getDificulty(), 'me');
     const isValid = blockchain.addBlock(block);
 
     if (isValid) {
@@ -58,5 +63,7 @@ app.post('/blocks', (req, res) => {
         return res.status(400).json('invalid block');
     }
 });
+
+
 
 export { app };

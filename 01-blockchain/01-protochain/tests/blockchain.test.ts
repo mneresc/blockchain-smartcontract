@@ -52,5 +52,14 @@ describe('BlockChain', () => {
         expect(blockchain.getBlock(block.hash)).toBe(block);
     });
 
+    it('should get nwxt block info', () => {
+        const blockInfo = blockchain.getNextBlock();
+        expect(blockInfo.index).toBe(1);
+        expect(blockInfo.previousHash).toBe(blockchain.blocks[0].hash);
+        expect(blockInfo.difficulty).toBe(blockchain.getDificulty());
+        expect(blockInfo.maxDifficulty).toBe(BlockChain.MAX_DIFICULT);
+        expect(blockInfo.feePerTx).toBe(1);
+    });
+
 
 });

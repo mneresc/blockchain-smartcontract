@@ -9,6 +9,12 @@ describe('BlockChain Server Tests', () => {
         expect(response.body.blocks).toBe(1);
     });
 
+    test('GET /blocks/next', async () => {
+        const response = await request(app).get('/blocks/next');
+        expect(response.status).toBe(200);
+        expect(response.body.index).toBe(1);
+    });
+
     test('GET /blocks/0', async () => {
         const response = await request(app).get('/blocks/0');
         expect(response.status).toBe(200);
@@ -36,19 +42,17 @@ describe('BlockChain Server Tests', () => {
     test('POST /blocks', async () => {
         const responseBlock = await request(app).get('/blocks/0');
         const responseStatus = await request(app).get('/status');
-        const response = await request(app).post('/blocks').send({ data: 'test' ,hash:'', 'previousHash': responseBlock.body.hash, index: responseStatus.body.blocks, nonce: 1, minedBy:''});
+        const response = await request(app).post('/blocks').send({ data: 'test' ,hash:'', 'previousHash': responseBlock.body.hash, index: responseStatus.body.blocks, nonce: 1, minedBy:'me'});
         expect(response.status).toBe(201);
         expect(response.body.index).toBe(1);
     });
 
 
     test('POST /blocks', async () => {
-        const responseBlock = await request(app).get('/blocks/0');
         const responseStatus = await request(app).get('/status');
         const response = await request(app).post('/blocks').send({ data: 'test' ,hash:'', 'previousHash': 'wrong hash', index: responseStatus.body.blocks});
         expect(response.status).toBe(400);
     });
-
 
     test('POST /blocks invalid', async () => {
         const response = await request(app).post('/blocks').send({ data: '' });
