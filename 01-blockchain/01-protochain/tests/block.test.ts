@@ -1,5 +1,6 @@
 import { describe, expect, beforeEach, beforeAll, it } from '@jest/globals';
 import Block from '../src/lib/block';
+import { BlockInfo } from '../src/lib/interfaces/blockinfo';
 
 describe('Block', () => {
     let block: Block;
@@ -40,5 +41,22 @@ describe('Block', () => {
     it('should be valid empty block', () => {
         const block = new Block();
         expect(block.isValid(genesis.hash, genesis.index, exampleDificult).success).toBe(false);
+    });
+
+    it('should be generare block fromBlockInfo' ,() => {
+        const blockInfo: BlockInfo = {
+            index: 1,
+            previousHash: '123',
+            difficulty: 1,
+            maxDifficulty: 5,
+            feePerTx: 1,
+            data: 'data'
+        };
+
+        const block = Block.fromBlockInfo(blockInfo);
+
+        expect(block.index).toBe(1);
+        expect(block.previousHash).toBe('123');
+        expect(block.data).toBe('data');
     });
 });
