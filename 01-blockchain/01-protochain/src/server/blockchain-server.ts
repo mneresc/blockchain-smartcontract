@@ -2,6 +2,9 @@ import express from 'express';
 import morgan from 'morgan';
 import BlockChain from '../lib/blockchain';
 import Block from '../lib/block';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const app = express();
 
@@ -12,7 +15,7 @@ const blockchain = new BlockChain();
 /* istanbul ignore if  */
 if (process.env.NODE_ENV !== 'test') {
     app.use(morgan('dev'));
-    app.listen(3000, () => {
+    app.listen(process.env.BLOCKCHAIN_PORT, () => {
         console.log('Server listening on port 3000');
     });
 }

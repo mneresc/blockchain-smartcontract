@@ -1,6 +1,9 @@
 import axios from "axios";
 import { BlockInfo } from "../lib/interfaces/blockinfo";
 import Block from "../lib/block";
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 type MinnerKey = {
     publicKey: string;
@@ -10,15 +13,16 @@ type MinnerKey = {
 export default class MinnerClient{
     static ENDPOINT = 'http://localhost:3000';
     static mineWallet: MinnerKey = {
-        publicKey:"hi",
+        publicKey:process.env.MINNER_WALLET as string,
         privateKey:"123456"
 
     };
 
     static totalMined = 0;
     static async mine(){
+        console.log(`Logged as ${MinnerClient.mineWallet.publicKey}`)
         console.log('Next block info')
-        const {data} = await axios.get(`${MinnerClient.ENDPOINT}/blocks/next`);
+        const {data} = await axios.get(`${process.env.BLOCKCHAIN_SERVER}:${process.env.BLOCKCHAIN_PORT}/blocks/next`);
         const blockInfo = data as BlockInfo;
         const nwBlock =  Block.fromBlockInfo(blockInfo);
 
@@ -29,7 +33,7 @@ export default class MinnerClient{
         console.log('Mined block #' + nwBlock.index);
 
         try {
-            const { data } = await axios.post(`${MinnerClient.ENDPOINT}/blocks`, nwBlock);
+            const { data } = await axios.post(`${process.env.ENDPOINT}/blocks`, nwBlock);
             console.log('Block #' + nwBlock.index + ' added to chain');
             console.log(data);
         } catch (err: any) {
