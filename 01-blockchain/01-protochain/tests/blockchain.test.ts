@@ -1,12 +1,21 @@
 import {describe, expect, beforeEach, it} from '@jest/globals';
 import BlockChain from '../src/lib/blockchain';
 import Block from '../src/lib/block';
+import Transaction from '../src/lib/transactions';
+import TransactionType from '../src/lib/interfaces/transaction-type';
 let blockchain: BlockChain;
 
 // create test to blockchainclass
 describe('BlockChain', () => {
+    let transactions: Transaction[];
 
     beforeEach(() => {
+        transactions = [
+            new Transaction({
+                type: TransactionType.FEE,
+                data: 'Genesis block',
+            } as Transaction),
+        ];
         blockchain = new BlockChain();
     });
 
@@ -15,14 +24,14 @@ describe('BlockChain', () => {
     });
 
     it('should add a new block', () => {
-        const block = new Block({ index: 1, previousHash: blockchain.blocks[0].hash, data: 'data', nonce: 1, mappedBy: 'me' } as unknown as Block);
+        const block = new Block({ index: 1, previousHash: blockchain.blocks[0].hash, transactions, nonce: 1, mappedBy: 'me' } as unknown as Block);
         block.mine(blockchain.getDificulty(),'me')
         blockchain.addBlock(block);
         expect(blockchain.blocks.length).toBe(2);
     });
 
     it('should be a valid blockchain', () => {
-        blockchain.addBlock(new Block({ index: 1, previousHash: blockchain.blocks[0].hash, data: 'data', nonce: 1, mappedBy: '' } as unknown as Block));
+        blockchain.addBlock(new Block({ index: 1, previousHash: blockchain.blocks[0].hash, transactions: [], nonce: 1, mappedBy: '' } as unknown as Block));
         expect(blockchain.isValid().success).toBe(true);
     });
 
@@ -39,7 +48,7 @@ describe('BlockChain', () => {
         block.mine(blockchain.getDificulty(),'me')
 
         blockchain.addBlock(block);
-        blockchain.addBlock(new Block({index: 1, previousHash: blockchain.blocks[0].hash, data:'invalid data'} as Block));
+        blockchain.addBlock(new Block({index: 1, previousHash: blockchain.blocks[0].hash, transactions:[]} as unknown as Block));
 
 
         expect(blockchain.blocks.length).toBe(2);

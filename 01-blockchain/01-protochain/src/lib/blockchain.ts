@@ -1,6 +1,8 @@
 import Block from './block';
 import Validation from './validation';
 import { BlockInfo } from './interfaces/blockinfo';
+import Transaction from './transactions';
+import TransactionType from './interfaces/transaction-type';
 
 export default class BlockChain {
     blocks: Block[];
@@ -8,9 +10,14 @@ export default class BlockChain {
     static readonly DIFFICULT_FACTOR = 5;
     static readonly MAX_DIFICULT = 62;
 
-
     constructor() {
-        this.blocks = [new Block({index: 0, previousHash:'', data: 'Genesis Block'} as Block)];
+        const transactions = [
+            new Transaction({
+                type: TransactionType.FEE,
+                data: 'Genesis block',
+            } as Transaction),
+        ];
+        this.blocks = [new Block({ index: 0, previousHash: '', transactions: transactions } as unknown as Block)];
         this.nextIndex++;
     }
 
@@ -34,7 +41,7 @@ export default class BlockChain {
     }
 
     getBlock(hash: string): Block | undefined {
-        return this.blocks.find(b => b.hash === hash)
+        return this.blocks.find(b => b.hash === hash);
     }
 
     getFeePerTx(): number {
@@ -42,21 +49,21 @@ export default class BlockChain {
     }
 
     getNextBlock(): BlockInfo {
-        const data = new Date().toString();
+        const transactions = [new Transaction({ data: Date.now().toString() } as Transaction)];
+
         const difficulty = this.getDificulty();
         const previousHash = this.getLastBlock().hash;
         const index = this.nextIndex;
         const feePerTx = this.getFeePerTx();
 
-        return { index, previousHash, difficulty, maxDifficulty: BlockChain.MAX_DIFICULT, feePerTx, data };
+        return { index, previousHash, difficulty, maxDifficulty: BlockChain.MAX_DIFICULT, feePerTx, transactions };
     }
-
 
     isValid(): Validation {
         for (let i = 1; i < this.blocks.length; i++) {
             const currentBlock = this.blocks[i];
             const previousBlock = this.blocks[i - 1];
-            const blockValidation = currentBlock.isValid(previousBlock.hash, previousBlock.index, this.getDificulty())
+            const blockValidation = currentBlock.isValid(previousBlock.hash, previousBlock.index, this.getDificulty());
             if (!blockValidation.success) {
                 return new Validation(false, `Invalid block #${currentBlock.index}: reason ${blockValidation.message}`);
             }

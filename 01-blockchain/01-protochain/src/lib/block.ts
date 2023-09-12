@@ -1,13 +1,14 @@
 import sha256 from 'crypto-js/sha256';
 import Validation from './validation';
 import { BlockInfo } from './interfaces/blockinfo';
+import Transaction from './transactions';
 
 export default class Block {
     index: number;
     hash: string;
     timestamp: number;
     previousHash: string;
-    data: string;
+    transactions: Transaction[];
     nonce?: number;
     minedBy?: string;
 
@@ -21,15 +22,20 @@ export default class Block {
         this.index = block?.index || 0;
         this.timestamp = block?.timestamp || Date.now();
         this.previousHash = block?.previousHash || '';
-        this.data = block?.data || '';
-
+        this.transactions = block?.transactions ? this.mapTransaction(block?.transactions) : [] as Transaction[];
         this.hash = block?.hash || this.getHash() ;
         this.nonce = block?.nonce || 0;
         this.minedBy = block?.minedBy || '';
     }
 
+    mapTransaction(transaction: Transaction[]): Transaction[] {
+        transaction.map(t => new Transaction(t));
+        return transaction;
+    }
+
     getHash(): string {
-        return sha256(this.index + this.previousHash + this.timestamp + this.data + this.nonce + this.minedBy).toString();
+        const txs = this.transactions.map(t => t.hash).join('');
+        return sha256(this.index + this.previousHash + this.timestamp + txs + this.nonce + this.minedBy).toString();
     }
 
     /**
@@ -59,6 +65,19 @@ export default class Block {
      */
     isValid(previousHash: string, previousIndex: number, difficulty: number = 1): Validation {
 
+        if(this.transactions){
+
+            if(this.transactions.filter(t => !t.isValid().success).length > 1){
+                return new Validation(false, 'Invalid transaction - too many fees');
+            }
+
+            const validations = this.transactions.map(t => t.isValid());
+            const error = validations.filter(v => !v.success).map(v => v.message).join(',');
+            if(error){
+                return new Validation(false, error);
+            }
+        }
+
         if (this.index < 1) {
             return new Validation(false, 'Invalid index');
         }
@@ -69,10 +88,6 @@ export default class Block {
 
         if (this.index !== previousIndex + 1) {
             return new Validation(false, 'Invalid index - index not match');
-        }
-
-        if(!this.nonce && !this.minedBy) {
-            return new Validation(false, 'Invalid nonce or minedBy');
         }
 
         const prefix = new Array(difficulty + 1).join('0');
@@ -88,7 +103,7 @@ export default class Block {
         const block = new Block();
         block.index = blockInfo.index;
         block.previousHash = blockInfo.previousHash;
-        block.data = blockInfo.data;
+        block.transactions = blockInfo.transactions;
 
         return block;
     }
