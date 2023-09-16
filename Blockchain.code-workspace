@@ -6,14 +6,6 @@
 		{
 			"name": "public-private-key-demo",
 			"path": "references/public-private-key-demo"
-		},
-		{
-			"name": "02-protominer",
-			"path": "01-blockchain/02-protominer"
-		},
-		{
-			"name": "01-protochain",
-			"path": "01-blockchain/01-protochain"
 		}
 	],
 	"settings": {

@@ -27,3 +27,13 @@
 ## Mempool
 
 ![mempool](./img-curso/mempool.png)
+
+## Wallet
+- Cliente da blockchain principalmente transações
+- Envia os dados para blockchain
+- Verificação de saldo
+
+
+## links úteis
+
+simulador de chaves ECDSA: https://kjur.github.io/jsrsasign/sample/sample-ecdsa.html

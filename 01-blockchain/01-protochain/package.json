@@ -10,7 +10,8 @@
     "start": "npx ts-node ./src/index.ts",
     "start:dev": "npx nodemon ./src/blockchain.ts --watch './src/' -e ts",
     "blockchain": "npx nodemon  ./src/server/blockchain-server.ts --watch './src/' -e ts",
-    "mine": "npx nodemon  ./src/client/index.ts --watch './src/' -e ts"
+    "mine": "npx nodemon  ./src/client/index.ts --watch './src/' -e ts",
+    "generate-wallet": "ts-node ./src/client/wallet-client.ts"
 
   },
   "keywords": [],

@@ -160,3 +160,6 @@ dist
 # End of https://www.toptal.com/developers/gitignore/api/node,visualstudiocode
 
 docker-compose.yml
+*.code-workspace
+
+Blockchain.code-workspace

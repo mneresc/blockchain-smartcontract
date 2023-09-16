@@ -19,4 +19,7 @@ $ npm run blockchain
 #some a simulação de mineração
 $ npm run mine
 
+# create a wallet
+$ npm run generate-wallet
+
 ```
