@@ -35,14 +35,6 @@ describe('BlockChain', () => {
         expect(blockchain.isValid().success).toBe(true);
     });
 
-    // it('should be an invalid blockchain', () => {
-    //     blockchain.addBlock(new Block({ index: 1, previousHash: blockchain.blocks[0].hash, data: 'data', nonce: 1, mappedBy: 'me' } as unknown as Block));
-    //     const block = new Block({index: 1, previousHash: blockchain.blocks[0].hash, data:'invalid data', nonce: null, mappedBy: null} as unknown as Block);
-    //     block.mine(blockchain.getDificulty(),'me')
-    //     blockchain.blocks[0] = block;
-    //     expect(blockchain.isValid().success).toBe(false);
-    // });
-
     it('should add a new invalid block', () => {
         const block = new Block({ index: 1, previousHash: blockchain.blocks[0].hash, data: 'data', nonce: 1, mappedBy: 'me' } as unknown as Block);
         block.mine(blockchain.getDificulty(),'me')
@@ -63,11 +55,38 @@ describe('BlockChain', () => {
 
     it('should get nwxt block info', () => {
         const blockInfo = blockchain.getNextBlock();
-        expect(blockInfo.index).toBe(1);
-        expect(blockInfo.previousHash).toBe(blockchain.blocks[0].hash);
-        expect(blockInfo.difficulty).toBe(blockchain.getDificulty());
-        expect(blockInfo.maxDifficulty).toBe(BlockChain.MAX_DIFICULT);
-        expect(blockInfo.feePerTx).toBe(1);
+        expect(blockInfo?.index).toBe(1);
+        expect(blockInfo?.previousHash).toBe(blockchain.blocks[0].hash);
+        expect(blockInfo?.difficulty).toBe(blockchain.getDificulty());
+        expect(blockInfo?.maxDifficulty).toBe(BlockChain.MAX_DIFICULT);
+        expect(blockInfo?.feePerTx).toBe(1);
+    });
+
+    it('should mempool has a invalid length', () => {
+        blockchain.addTransaction(new Transaction({ type: TransactionType.FEE, data: 'data' } as Transaction));
+        expect(blockchain.mempool.length).toBe(1);
+    });
+
+    it('should addTraansaction return a invalid transaction', () => {
+        const transaction = new Transaction({ type: TransactionType.FEE, data: 'data', hash:'a' } as Transaction);
+        transaction.hash = 'invalid hash';
+        expect(blockchain.addTransaction(transaction).success).toBe(false);
+    });
+
+    it('should addTraansaction return a already exists Transaction', () => {
+        const transaction = new Transaction({ type: TransactionType.FEE, data: 'data', hash:'a' } as Transaction);
+        blockchain.addTransaction(transaction);
+        expect(blockchain.addTransaction(transaction).success).toBe(false);
+    });
+
+    it('should addBlock return false', () => {
+        const block = new Block({ index: 1, previousHash: blockchain.blocks[0].hash, data: 'data', nonce: 1, mappedBy: 'me' } as unknown as Block);
+
+        const blockchainInvalid = new BlockChain();
+        blockchainInvalid.mempool.push(new Transaction({ type: TransactionType.FEE, data: 'data', hash:'a' } as Transaction));
+
+        blockchainInvalid.addBlock(block);
+        expect(blockchainInvalid.addBlock(block)).toBe(false);
     });
 
 

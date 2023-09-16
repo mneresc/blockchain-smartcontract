@@ -16,10 +16,14 @@
 
 ## Proof of
 
-- Work: Busca geração de um hash - hash rate. Não escala bem por gastar muito energia.
+- Work: Busca geração de um hash - hash rate. Não escala bem por gastar muita energia.
 - Steak: Participação, qunto mais tokens na rede mais você consegue validar. Menos energia. Pool de steak. Tentou fraudar a rede cata suas moedos;
-- Proof of useful work: Mineração que valida uma prova útil
+- Proof of useful work: Mineração que valida uma prova útil (cálculos científicos por exemplo)
 
 ## Protótipos
 
 - Blockchain prototype: [protochain](./01-blockchain/01-protochain/READNE.md)
+
+## Mempool
+
+![mempool](./img-curso/mempool.png)

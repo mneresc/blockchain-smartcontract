@@ -3,6 +3,7 @@ import morgan from 'morgan';
 import BlockChain from '../lib/blockchain';
 import Block from '../lib/block';
 import dotenv from 'dotenv';
+import Transaction from '../lib/transactions';
 
 dotenv.config();
 
@@ -51,6 +52,18 @@ app.get('/blocks/:indexOrHash', (req, res) => {
     return res.json(blockByIndex);
 });
 
+/**
+ * get blocks by hash or index
+ */
+app.get('/transactions/mempool', (req, res) => {
+    return res.json({
+        next: blockchain.mempool.slice(0, BlockChain.TX_PER_BLOCK),
+        total: blockchain.mempool.length,
+
+    });
+});
+
+
 app.post('/blocks', (req, res) => {
     if (req.body.hash === undefined || !req.body.data) {
         return res.status(400).json('missing data');
@@ -65,6 +78,22 @@ app.post('/blocks', (req, res) => {
     } else {
         return res.status(400).json('invalid block');
     }
+});
+
+app.post('/transactions', (req, res) => {
+    if (req.body.hash === undefined || !req.body.data) {
+        return res.status(400).json('missing data');
+    }
+
+    const tx =   new Transaction(req.body as Transaction);
+    const isValid = blockchain.addTransaction(tx);
+
+    if (isValid.success) {
+        return res.status(201).json(tx);
+    } else {
+        return res.status(400).json('invalid block');
+    }
+
 });
 
 

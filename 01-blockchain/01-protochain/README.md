@@ -13,7 +13,10 @@ $ mv ../../infra/docker-compose.example  ../../infra/docker-compose.yml
 
 $ docker-compose up
 
-#depois start o projeto
-$ npm run start
+#sobe o servidor da protoblockchain
+$ npm run blockchain
+
+#some a simulação de mineração
+$ npm run mine
 
 ```

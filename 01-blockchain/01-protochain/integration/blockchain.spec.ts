@@ -58,4 +58,19 @@ describe('BlockChain Server Tests', () => {
         const response = await request(app).post('/blocks').send({ data: '' });
         expect(response.status).toBe(400);
     });
+
+    test('POST /transactions', async () => {
+        const response = await request(app).post('/transactions').send({ data: 'test' ,hash:''});
+        expect(response.status).toBe(201);
+    });
+
+    test('POST /transactions undefiend hash', async () => {
+        const response = await request(app).post('/transactions').send({ data: 'test'});
+        expect(response.status).toBe(400);
+    });
+
+    test('POST /transactions invalid', async () => {
+        const response = await request(app).post('/transactions').send({ data: 'a' , hash:'x' });
+        expect(response.status).toBe(400);
+    });
 });
