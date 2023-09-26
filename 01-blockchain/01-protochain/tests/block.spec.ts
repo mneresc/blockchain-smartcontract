@@ -15,7 +15,7 @@ describe('Block', () => {
             new Transaction({
                 type: TransactionType.FEE,
                 data: 'Genesis block',
-            } as Transaction),
+            } as unknown as Transaction),
         ];
         genesis = new Block({ index: 0, previousHash: '', transactions: transactions } as unknown as Block);
     });

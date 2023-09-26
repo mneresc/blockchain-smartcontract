@@ -3,18 +3,31 @@ import BlockChain from '../src/lib/blockchain';
 import Block from '../src/lib/block';
 import Transaction from '../src/lib/transactions';
 import TransactionType from '../src/lib/interfaces/transaction-type';
+import Wallet from '../src/lib/wallet';
+import TxInput from '../src/lib/transaction-input';
 let blockchain: BlockChain;
 
 // create test to blockchainclass
 describe('BlockChain', () => {
     let transactions: Transaction[];
+    const mockWallets = {
+        alice: new Wallet(),
+        bob: new Wallet()
+    }
+
+    const mockTxInput: TxInput = {
+        fromAddress: mockWallets.alice.publicKey,
+        amount: 10
+    } as TxInput;
+
 
     beforeEach(() => {
         transactions = [
             new Transaction({
                 type: TransactionType.FEE,
                 data: 'Genesis block',
-            } as Transaction),
+                txInput: mockTxInput
+            } as unknown as Transaction),
         ];
         blockchain = new BlockChain();
     });
@@ -63,18 +76,18 @@ describe('BlockChain', () => {
     });
 
     it('should mempool has a invalid length', () => {
-        blockchain.addTransaction(new Transaction({ type: TransactionType.FEE, data: 'data' } as Transaction));
+        blockchain.addTransaction(new Transaction({ type: TransactionType.FEE, data: 'data' } as unknown as Transaction));
         expect(blockchain.mempool.length).toBe(1);
     });
 
     it('should addTraansaction return a invalid transaction', () => {
-        const transaction = new Transaction({ type: TransactionType.FEE, data: 'data', hash:'a' } as Transaction);
+        const transaction = new Transaction({ type: TransactionType.FEE, data: 'data', hash: 'a' } as unknown as Transaction);
         transaction.hash = 'invalid hash';
         expect(blockchain.addTransaction(transaction).success).toBe(false);
     });
 
     it('should addTraansaction return a already exists Transaction', () => {
-        const transaction = new Transaction({ type: TransactionType.FEE, data: 'data', hash:'a' } as Transaction);
+        const transaction = new Transaction({ type: TransactionType.FEE, data: 'data', hash: 'a' } as unknown as Transaction);
         blockchain.addTransaction(transaction);
         expect(blockchain.addTransaction(transaction).success).toBe(false);
     });
@@ -83,7 +96,7 @@ describe('BlockChain', () => {
         const block = new Block({ index: 1, previousHash: blockchain.blocks[0].hash, data: 'data', nonce: 1, mappedBy: 'me' } as unknown as Block);
 
         const blockchainInvalid = new BlockChain();
-        blockchainInvalid.mempool.push(new Transaction({ type: TransactionType.FEE, data: 'data', hash:'a' } as Transaction));
+        blockchainInvalid.mempool.push(new Transaction({ type: TransactionType.FEE, data: 'data', hash: 'a' } as unknown as Transaction));
 
         blockchainInvalid.addBlock(block);
         expect(blockchainInvalid.addBlock(block)).toBe(false);

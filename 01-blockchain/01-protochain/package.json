@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "test:integration": "NODE_ENV=test jest --testMatch='**/integration/*.spec.ts'",
+    "test:unit": "NODE_ENV=test jest --testMatch='**/tests/*.spec.ts'",
+    "test:integration": "NODE_ENV=test jest --testMatch='**/integration/*.ts'",
     "compile": "npx tsc",
     "start": "npx ts-node ./src/index.ts",
     "start:dev": "npx nodemon ./src/blockchain.ts --watch './src/' -e ts",

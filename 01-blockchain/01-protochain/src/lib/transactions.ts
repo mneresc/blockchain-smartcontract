@@ -22,7 +22,7 @@ export default class Transaction {
 
 
     getHash(): string {
-        return sha256(this.type + this.timestamp + this.to + this.txInput.getHash()).toString();
+        return sha256(this.type + this.timestamp + this.to).toString();
     }
 
     isValid(): Validation {
