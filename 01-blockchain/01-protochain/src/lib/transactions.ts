@@ -1,22 +1,28 @@
 import sha256 from 'crypto-js/sha256';
 import TransactionType from './interfaces/transaction-type';
 import Validation from './validation';
+import TxInput from './transaction-input';
 
 export default class Transaction {
     type: TransactionType;
     timestamp: number;
-    data: string;
+    txInput: TxInput;
     hash: string;
+    to: string;
+
 
     constructor(tx?: Transaction) {
         this.type = tx?.type || TransactionType.REGULAR;
         this.timestamp = tx?.timestamp || Date.now();
-        this.data = tx?.data || '';
+        this.to = tx?.to || '';
         this.hash = tx?.hash || this.getHash();
+        this.txInput = tx?.txInput || new TxInput();
     }
 
+
+
     getHash(): string {
-        return sha256(this.type + this.timestamp + this.data).toString();
+        return sha256(this.type + this.timestamp + this.to + this.txInput.getHash()).toString();
     }
 
     isValid(): Validation {
