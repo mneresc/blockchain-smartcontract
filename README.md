@@ -29,10 +29,55 @@
 ![mempool](./img-curso/mempool.png)
 
 ## Wallet
+
 - Cliente da blockchain principalmente transações
 - Envia os dados para blockchain
 - Verificação de saldo
 
+
+## Etherium
+
+- DeFi: Finanças descentralizadas, utiliza smart contracts.
+- Mantenedores: Fundação etherium
+- Focada em GPU - quando proof of work
+- Total supply - Não tem supply máximo, não é inflacionário quanto BTC.
+- Proof of Stake - Possuir 32 ETH pode ser um validador.
+- Bloco ETH - contém informações que permite rastrear todo o estado da rede.
+- Aplicações:
+
+    - Financeiras, problemas computacionais, votação, governança descentralizada, armazenamento decentralizado.
+- Token - moeda digital não nativa da rede.
+- NFT - bens únicos.
+
+### Transações
+
+- Contas: EOA (Padrão) e smart contracts.
+- Code: Código do SC
+- Storage: Demais dados do contrato
+
+### GAS
+
+- Unidade de medida: computação necessária para executar uma transação
+-
+
+## Smart Contract
+
+- Usam EVM
+- EVM mais famosa GEHT
+- Tipos de transação
+    - to: endereço do contrato
+    - chamada: call - leitura de info sem custo | send - mudar o estado de uma conta
+- Transações bem parecidas com a normal, sem value, com data
+- Layers EVM: ![EVM](./img-curso/evm_2.png)
+
+
+## Redes alternativas
+
+- Cardano - Concebido para ter fins lucrativos, lançado como proof of stake
+
+- Polygon - multi-chain layer 2.
+
+- BNB Chain - Binance que nasce o token, proprietária e centralizada.
 
 ## links úteis
 
