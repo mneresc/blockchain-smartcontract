@@ -71,6 +71,10 @@
 - Layers EVM: ![EVM](./img-curso/evm_2.png)
 
 
+## Ambiente
+
+- Remix: https://remix.ethereum.org/
+
 ## Redes alternativas
 
 - Cardano - Concebido para ter fins lucrativos, lançado como proof of stake
