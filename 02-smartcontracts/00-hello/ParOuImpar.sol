@@ -5,22 +5,38 @@
  contract ParOuImpar {
 
     uint8 public choice = 0;
+    uint256 private cpuNumber;
+    bool private result;
 
-    function chose(uint8 newChoice) public {
-        require(newChoice == 1 || newChoice == 2, 'chouse 1 or 2');
+    function choose(uint8 newChoice) public {
+        require(newChoice == 1 || newChoice == 2, 'choose a option: 1 = Even or 2 = Odd');
         choice = newChoice;
     }
 
-    function play(uint8 number) public view returns(bool){
-        uint8 cpuNumber = 1;
+    function pseudoRandom() private view returns(uint256){
+       return uint(keccak256(abi.encodePacked(block.timestamp, choice)));
+    }
+
+    function play(uint8 number) public returns(bool){
+        require(choice != 0 , 'choose a option first: 1 = Even or 2 = Odd');
+
+        cpuNumber = pseudoRandom();
         bool isEven = (number + cpuNumber) % 2 == 0 ;
 
         if(isEven && choice == 1){
-            return true;
+            return result = true;
         }else if (!isEven && choice == 2){
-            return true;
+            return result = true;
         }else{
-            return false;
+            return result = false;
         }
+    }
+
+    function showCPUOption() public view returns(uint256){
+        return cpuNumber;
+    }
+
+    function showResult() public view returns(bool){
+        return result;
     }
  }
