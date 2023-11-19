@@ -1,15 +1,22 @@
 // SPDX-License-Identifier: MIT
 
- pragma solidity ^0.8.7;
+ pragma solidity ^0.8.12;
+
+import {Strings} from "@openzeppelin/contracts/utils/Strings.sol";
 
  contract ParOuImpar {
 
-    uint8 public choice = 0;
-    uint256 private cpuNumber;
-    bool private result;
+    string public choice = '';
 
-    function choose(uint8 newChoice) public {
-        require(newChoice == 1 || newChoice == 2, 'choose a option: 1 = Even or 2 = Odd');
+    // pure not write or read from blockchain
+    function compare(string memory needed, string memory expected) private pure returns (bool){
+        bytes memory arrNeeded = bytes(needed);
+        bytes memory arrExpected = bytes(expected);
+        return arrNeeded.length == arrExpected.length && keccak256(arrNeeded) == keccak256(arrExpected);
+    }
+
+    function choose(string memory newChoice) public {
+        require(compare(newChoice, 'EVEN') || compare(newChoice, 'ODD'), 'choose a option: 1 = EVEN or 2 = ODD');
         choice = newChoice;
     }
 
@@ -17,26 +24,21 @@
        return uint(keccak256(abi.encodePacked(block.timestamp, choice)));
     }
 
-    function play(uint8 number) public returns(bool){
-        require(choice != 0 , 'choose a option first: 1 = Even or 2 = Odd');
+    function play(uint8 number) public view returns(string memory){
+        require(!compare(choice, '')  , 'choose a option first: EVEN or 2 ODD');
 
-        cpuNumber = pseudoRandom();
+        uint256 cpuNumber = pseudoRandom();
         bool isEven = (number + cpuNumber) % 2 == 0 ;
 
-        if(isEven && choice == 1){
-            return result = true;
-        }else if (!isEven && choice == 2){
-            return result = true;
+        string memory mensage = string.concat('Players choose ',choice, ' and plays ',Strings.toString(number),' and CPU plays ', Strings.toString(cpuNumber));
+
+        if(isEven && compare(choice, 'EVEN') ){
+            return string.concat(mensage, ' Player WINs');
+        }else if (!isEven && compare(choice, 'ODD')){
+            return string.concat(mensage, ' Player WINs');
         }else{
-            return result = false;
+            return string.concat(mensage, ' Looooooser');
         }
     }
 
-    function showCPUOption() public view returns(uint256){
-        return cpuNumber;
-    }
-
-    function showResult() public view returns(bool){
-        return result;
-    }
  }
