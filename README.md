@@ -68,12 +68,34 @@
     - to: endereço do contrato
     - chamada: call - leitura de info sem custo | send - mudar o estado de uma conta
 - Transações bem parecidas com a normal, sem value, com data
-- Layers EVM: ![EVM](./img-curso/evm_2.png)
+- Layers EVM:
+![EVM](./img-curso/evm_2.png)
 
 
 ## Ambiente
 
 - Remix: https://remix.ethereum.org/
+
+## Objetos
+
+- Mensage - Informações da execução das funções
+    - msg.sender (Quem chamou) | data (dados enviados juntos a requisição) | value (Quanto foi transferido de fundos) | sig (assinatura da mensagem)
+
+- Block - Informações do bloco que está sendo minerado no momento.
+    - block.timestamp | difficulty | number | coinbase (endereço de quem minerou oo bloco)
+
+- Account
+
+## Deploy
+
+- Remix
+    - Injected provider
+
+## DAAPS
+
+- DEX - exchange descentralizada - uniswap
+- Marketplaces - opensea
+- Crypto games - Axie infinity
 
 ## Redes alternativas
 
@@ -83,6 +105,12 @@
 
 - BNB Chain - Binance que nasce o token, proprietária e centralizada.
 
+## Execução EVM
+* Função construtora -> Chamada somente uma vez quando ele for criado.
+
+![EVM](./img-curso/evm.png)
+
 ## links úteis
 
 simulador de chaves ECDSA: https://kjur.github.io/jsrsasign/sample/sample-ecdsa.html
+Faucet - https://faucets.chain.link/
