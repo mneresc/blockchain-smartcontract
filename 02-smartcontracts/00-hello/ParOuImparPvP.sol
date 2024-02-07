@@ -80,8 +80,12 @@ contract PvPParOuImpar {
     uint8 public numberPlayer1;
     string public status = "";
     address payable private immutable owner;
+    WinnersBoard[] public winnersBoardList;
 
-    address[] winnersList;
+    struct WinnersBoard {
+        address wallet;
+        uint32 wins;
+    }
 
     constructor() {
         owner = payable(msg.sender);
@@ -126,24 +130,24 @@ contract PvPParOuImpar {
         );
     }
 
-    function exists(address winner) private view returns (bool) {
-        for (uint256 i = 0; i < winnersList.length; i++) {
-            if (winnersList[i] == winner) {
+    function updateWinner(address winner) private returns (bool) {
+        for (uint256 i = 0; i < winnersBoardList.length; i++) {
+            if (winnersBoardList[i].wallet == winner) {
+                winnersBoardList[i].wins++;
                 return true;
             }
         }
+        winnersBoardList.push(WinnersBoard(winner,1));
         return false;
     }
 
     function transferReward(address winner) private {
         address contractAddress = address(this);
-        owner.transfer((contractAddress.balance / 100) * 50);
+        owner.transfer((contractAddress.balance / 100) * 30);
         payable(winner).transfer(contractAddress.balance);
-
-        if (!exists(winner)) {
-            winnersList.push(winner);
-        }
+        updateWinner(winner);
     }
+
 
     function play(uint8 number) public payable {
         require(
