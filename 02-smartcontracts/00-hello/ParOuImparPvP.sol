@@ -50,7 +50,11 @@ library Strings {
     /**
      * @dev Converts a `uint256` to its ASCII `string` hexadecimal representation with fixed length.
      */
-    function toHexString(uint256 value, uint256 length) internal pure returns (string memory) {
+    function toHexString(uint256 value, uint256 length)
+        internal
+        pure
+        returns (string memory)
+    {
         bytes memory buffer = new bytes(2 * length + 2);
         buffer[0] = "0";
         buffer[1] = "x";
@@ -71,81 +75,124 @@ library Strings {
 }
 
 contract PvPParOuImpar {
-
-    string public choicePlayer1 = '';
+    string public choicePlayer1 = "";
     address public player1;
     uint8 public numberPlayer1;
-    string public status = '';
+    string public status = "";
     address payable private immutable owner;
 
-    constructor(){
+    address[] winnersList;
+
+    constructor() {
         owner = payable(msg.sender);
     }
 
     // pure not write or read from blockchain
-    function compare(string memory needed, string memory expected) private pure returns (bool){
+    function compare(string memory needed, string memory expected)
+        private
+        pure
+        returns (bool)
+    {
         bytes memory arrNeeded = bytes(needed);
         bytes memory arrExpected = bytes(expected);
-        return arrNeeded.length == arrExpected.length && keccak256(arrNeeded) == keccak256(arrExpected);
+        return
+            arrNeeded.length == arrExpected.length &&
+            keccak256(arrNeeded) == keccak256(arrExpected);
     }
 
-    function getBalance() public view returns(uint)
-    {
+    function getBalance() public view returns (uint256) {
         return address(this).balance;
     }
 
-
     function choose(string memory newChoice) public {
-        require(compare(newChoice, 'EVEN') || compare(newChoice, 'ODD'), 'choose a option: 1 = EVEN or 2 = ODD');
+        require(
+            compare(newChoice, "EVEN") || compare(newChoice, "ODD"),
+            "choose a option: 1 = EVEN or 2 = ODD"
+        );
 
-        string memory mensage  = string.concat('Player 1 already choose', choicePlayer1);
+        string memory mensage = string.concat(
+            "Player 1 already choose",
+            choicePlayer1
+        );
 
-        require(compare(choicePlayer1, '')  , mensage);
+        require(compare(choicePlayer1, ""), mensage);
         choicePlayer1 = newChoice;
         player1 = msg.sender;
-        status = string.concat(' Player 1 is ', Strings.toHexString(player1), ' and choose ', choicePlayer1);
+        status = string.concat(
+            " Player 1 is ",
+            Strings.toHexString(player1),
+            " and choose ",
+            choicePlayer1
+        );
     }
 
-    function transferReward(address winner) private{
+    function exists(address winner) private view returns (bool) {
+        for (uint256 i = 0; i < winnersList.length; i++) {
+            if (winnersList[i] == winner) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function transferReward(address winner) private {
         address contractAddress = address(this);
-        owner.transfer(contractAddress.balance / 100 * 50);
+        owner.transfer((contractAddress.balance / 100) * 50);
         payable(winner).transfer(contractAddress.balance);
 
+        if (!exists(winner)) {
+            winnersList.push(winner);
+        }
     }
 
     function play(uint8 number) public payable {
-        require(!compare(choicePlayer1, '')  , 'choose a option first: EVEN or 2 ODD');
-        require(number > 0, 'choose number grater then zero');
-        require(msg.value >= 0.0001 ether, 'Pague doido.');
+        require(
+            !compare(choicePlayer1, ""),
+            "choose a option first: EVEN or 2 ODD"
+        );
+        require(number > 0, "choose number grater then zero");
+        require(msg.value >= 0.0001 ether, "Pague doido.");
 
-        if(player1 == msg.sender){
+        if (player1 == msg.sender) {
             numberPlayer1 = number;
-            status = string.concat('Player 1 already plays');
-        }else{
-            require(numberPlayer1 != 0, 'Player 1 plays first');
+            status = string.concat("Player 1 already plays");
+        } else {
+            require(numberPlayer1 != 0, "Player 1 plays first");
 
-            status = string.concat('Player 1 and choose ', choicePlayer1, ' and plays ', Strings.toString(numberPlayer1) , ' Player 2 plays ', Strings.toString(number));
+            status = string.concat(
+                "Player 1 and choose ",
+                choicePlayer1,
+                " and plays ",
+                Strings.toString(numberPlayer1),
+                " Player 2 plays ",
+                Strings.toString(number)
+            );
 
-            bool isEven = (number + numberPlayer1) % 2 == 0 ;
+            bool isEven = (number + numberPlayer1) % 2 == 0;
 
-            string memory mensage = string.concat('Player 1 choose ',choicePlayer1, ' and plays ',Strings.toString(numberPlayer1),' and Player 2 ', Strings.toString(number));
+            string memory mensage = string.concat(
+                "Player 1 choose ",
+                choicePlayer1,
+                " and plays ",
+                Strings.toString(numberPlayer1),
+                " and Player 2 ",
+                Strings.toString(number)
+            );
 
-            if(isEven && compare(choicePlayer1, 'EVEN') ){
-                status = string.concat(mensage, ' Player 1 WINs');
+            if (isEven && compare(choicePlayer1, "EVEN")) {
+                status = string.concat(mensage, " Player 1 WINs");
                 transferReward(player1);
-            }else if (!isEven && compare(choicePlayer1, 'ODD')){
-                status =  string.concat(mensage, ' Player 1 WINs');
+            } else if (!isEven && compare(choicePlayer1, "ODD")) {
+                status = string.concat(mensage, " Player 1 WINs");
                 transferReward(player1);
-            }else{
-                status =  string.concat(mensage, ' Player 2 WINs');
+            } else {
+                status = string.concat(mensage, " Player 2 WINs");
                 transferReward(msg.sender);
             }
             // clean players
-            choicePlayer1 = '';
+            choicePlayer1 = "";
             player1 = address(0);
             numberPlayer1 = 0;
         }
-
     }
-
- }
+}
