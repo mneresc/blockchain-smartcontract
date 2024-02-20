@@ -8,6 +8,8 @@ contract BooksDatabase {
         uint16 year;
     }
 
+    address owner;
+
     uint32 id;
 
     mapping(uint32 => Book) public books;
@@ -15,6 +17,10 @@ contract BooksDatabase {
     function addBook(Book memory newBook) public {
         id++;
         books[id] = newBook;
+    }
+
+    constructor(){
+        owner = msg.sender;
     }
 
     function editBook(uint32 idBook, Book memory newBook) public {
@@ -35,7 +41,8 @@ contract BooksDatabase {
     }
 
 
-    function deleteBook(uint32 idBook) public{
+    function deleteBook(uint32 idBook) public restricted{
+
         delete books[idBook];
     }
 
@@ -50,6 +57,11 @@ contract BooksDatabase {
         return
             arrNeeded.length == arrExpected.length &&
             keccak256(arrNeeded) == keccak256(arrExpected);
+    }
+
+    modifier restricted(){
+        require(owner == msg.sender, "Sai daqui o seu cachorro!");
+        _;
     }
 }
 //["1984", 1949]
