@@ -111,7 +111,7 @@ contract PvPParOuImpar {
     function choose(string memory newChoice) public {
         require(
             compare(newChoice, "EVEN") || compare(newChoice, "ODD"),
-            "choose a option: 1 = EVEN or 2 = ODD"
+            "choose a option: EVEN or ODD"
         );
 
         string memory mensage = string.concat(
@@ -152,7 +152,7 @@ contract PvPParOuImpar {
     function play(uint8 number) public payable {
         require(
             !compare(choicePlayer1, ""),
-            "choose a option first: EVEN or 2 ODD"
+            "choose a option first: EVEN or ODD"
         );
         require(number > 0, "choose number grater then zero");
         require(msg.value >= 0.0001 ether, "Pague doido.");
