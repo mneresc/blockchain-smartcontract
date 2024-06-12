@@ -1,0 +1,17 @@
+{
+  "name": "01-hardheat",
+  "version": "1.0.0",
+  "description": "Instala como dependência ```bash npm init -y npm i -D hardhat ``` ```bash npx hardhat ```",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx hardhat test",
+    "deploy:local": "npx hardhat ignition deploy ignition/modules/BookDatabase.ts --network local"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "hardhat": "^2.22.4"
+  }
+}

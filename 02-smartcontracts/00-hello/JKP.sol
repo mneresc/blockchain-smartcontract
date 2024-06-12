@@ -35,7 +35,7 @@ contract JoKenPo {
     function play(Options newChoice) public payable {
         require(newChoice != Options.NONE, "Invalid choice");
         require(player1 != msg.sender, "Wait the another player.");
-        require(msg.value >= 0.001 ether, "Ivalid bid.");
+        require(msg.value >= 0.001 ether, "Invalid bid.");
 
         if (choice1 == Options.NONE) {
             player1 = msg.sender;
