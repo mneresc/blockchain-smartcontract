@@ -1,4 +1,6 @@
-# Configurando hardhat
+# Hardhat
+
+## Configurando hardhat
 
 ```bash
 # Inicia projeto
@@ -15,7 +17,7 @@ npm i -D hardhat
 npx hardhat compile
 ```
 
-# Configurando ethereum nodes
+## Configurando ethereum nodes
 
 * Principal: Geth/parity
 * Remoto: infura, alchemy, moralis
@@ -69,3 +71,18 @@ await contract.addBook({title:"O que vim fazer no mundo?", year:"1990"})
 ```javascript
 await contract.books(1)
 ```
+* contrato de teste na sepolia https://sepolia.etherscan.io/address/0xa1Ab09Ec7c1106457E4C1223Eec601bdC7cB49cE
+* Da pra usar o propio ether scam para testar
+
+
+## verify
+
+Verifica um contrato e criar opçoes de teste na sepolia veja comando verify:sepolia no package.json
+
+```bash
+npx hardhat verify --network sepolia 0xa1Ab09Ec7c1106457E4C1223Eec601bdC7cB49cE
+```
+# ERC20
+
+Documentaçao: https://ethereum.org/pt/developers/docs/standards/tokens/erc-20/
+Token Fungível: Nao sao tokens únicos

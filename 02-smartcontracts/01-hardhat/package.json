@@ -1,17 +1,23 @@
 {
   "name": "01-hardheat",
   "version": "1.0.0",
-  "description": "Instala como dependência ```bash npm init -y npm i -D hardhat ``` ```bash npx hardhat ```",
+  "description": "Primeiro projeto em hardhat",
   "main": "index.js",
   "scripts": {
     "test": "npx hardhat test",
-    "deploy:local": "npx hardhat ignition deploy ignition/modules/BookDatabase.ts --network local"
+    "deploy:local": "npx hardhat ignition deploy ignition/modules/BookDatabase.ts --network local",
+    "deploy:sepolia": "npx hardhat ignition deploy ignition/modules/BookDatabase.ts --network sepolia",
+    "verify:sepolia": "npx hardhat verify --network sepolia 0xa1Ab09Ec7c1106457E4C1223Eec601bdC7cB49cE"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Marcelo Neres",
+  "license": "MIT",
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@nomiclabs/hardhat-etherscan": "^3.1.8",
     "hardhat": "^2.22.4"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5"
   }
 }
