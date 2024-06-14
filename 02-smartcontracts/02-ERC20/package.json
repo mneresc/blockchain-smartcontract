@@ -1,0 +1,24 @@
+{
+  "name": "02-erc20",
+  "version": "1.0.0",
+  "description": "Moeda de testa para acompanhar o curso web 3.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx hardhat test",
+    "deploy:local": "npx hardhat ignition deploy ignition/modules/MeuDinheirinho.ts --network local",
+    "deploy:sepolia": "npx hardhat ignition deploy ignition/modules/MeuDinheirinho.ts --network sepolia",
+    "verify:sepolia": "npx hardhat verify --network sepolia 0xa1Ab09Ec7c1106457E4C1223Eec601bdC7cB49cE",
+    "start": "npx hardhat node",
+    "compile": "npx hardhat compile"
+  },
+  "keywords": [
+    "web3",
+    "pica-pau"
+  ],
+  "author": "Marcelo Neres",
+  "license": "MIT",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "hardhat": "^2.22.5"
+  }
+}
