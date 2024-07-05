@@ -37,5 +37,43 @@ describe("MeuDinheirinho", function () {
             const { dinheirinho } = await loadFixture(deployFixture);
             expect(await dinheirinho.totalSupply()).to.equal(1000000n*10n**18n);
         });
+
+        // should get balance of account
+        it("Should get balance of account", async function () {
+            const { dinheirinho, owner } = await loadFixture(deployFixture);
+            expect(await dinheirinho.balanceOf(owner.address)).to.equal(1000000n*10n**18n);
+        });
+
+        // should transfer balance
+        it("Should transfer balance", async function () {
+            const { dinheirinho, owner, otherAccount } = await loadFixture(deployFixture);
+
+            await expect(dinheirinho.transfer(otherAccount.address, 1))
+                .to.emit(dinheirinho, "Transfer")
+                .withArgs(owner.address, otherAccount.address, 1);
+
+            expect(await dinheirinho.balanceOf(owner.address)).to.equal(1000000n*10n**18n - 1n);
+            expect(await dinheirinho.balanceOf(otherAccount.address)).to.equal(1n);
+        });
+
+        //should not transfer more than balance
+        it("Should transfer balance", async function () {
+            const { dinheirinho, owner, otherAccount } = await loadFixture(deployFixture);
+            const poorAcount = dinheirinho.connect(otherAccount);
+
+            await expect(poorAcount.transfer(owner.address, 1))
+                .to.be.revertedWith("Not enough balance");
+        });
+
+          it("Should get approve transfer", async function () {
+            const valueApproved = 10n;
+            const { dinheirinho, owner , otherAccount} = await loadFixture(deployFixture);
+
+            await expect(dinheirinho.approve(otherAccount.address, valueApproved))
+                .to.emit(dinheirinho, "Approval")
+                .withArgs(owner.address,  otherAccount.address, valueApproved);
+            expect(await dinheirinho.allowence(owner.address, otherAccount.address)).to.equal(valueApproved);
+        });
+
     });
 });
